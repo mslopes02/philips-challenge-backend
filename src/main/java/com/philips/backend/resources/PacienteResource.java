@@ -35,6 +35,24 @@ public class PacienteResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<PacienteDTO>> findAll(){
+		List<Paciente> list = service.findAll();
+		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(value="/page", method=RequestMethod.GET)
+	public ResponseEntity<Page<PacienteDTO>> findPage(
+			@RequestParam(value="page", defaultValue="0") Integer page, 
+			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+			@RequestParam(value="orderBy", defaultValue="nome") String orderBy, 
+			@RequestParam(value="direction", defaultValue="ASC") String direction){
+		Page<Paciente> list = service.findPage(page, linesPerPage, orderBy, direction);
+		Page<PacienteDTO> listDto = list.map(obj -> new PacienteDTO(obj));
+		return ResponseEntity.ok().body(listDto);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody PacienteNewDTO objDTO){
 		Paciente obj = service.fromDTO(objDTO);
@@ -57,21 +75,5 @@ public class PacienteResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<PacienteDTO>> findAll(){
-		List<Paciente> list = service.findAll();
-		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
 	
-	@RequestMapping(value="/page", method=RequestMethod.GET)
-	public ResponseEntity<Page<PacienteDTO>> findPage(
-			@RequestParam(value="page", defaultValue="0") Integer page, 
-			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
-			@RequestParam(value="orderBy", defaultValue="nome") String orderBy, 
-			@RequestParam(value="direction", defaultValue="ASC") String direction){
-		Page<Paciente> list = service.findPage(page, linesPerPage, orderBy, direction);
-		Page<PacienteDTO> listDto = list.map(obj -> new PacienteDTO(obj));
-		return ResponseEntity.ok().body(listDto);
-	}
 }
