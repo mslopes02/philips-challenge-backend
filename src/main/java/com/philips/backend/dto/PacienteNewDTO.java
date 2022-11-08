@@ -33,6 +33,27 @@ public class PacienteNewDTO implements Serializable{
 	
 	public PacienteNewDTO() {}
 
+	public PacienteNewDTO(
+			String nome,
+			String email,
+			String cpf,
+			String logradouro,
+			String numero,
+			String complemento,
+			String bairro,
+			String cep,
+			Integer cidadeId) {
+		this.nome = nome;
+		this.email = email;
+		this.cpf = cpf;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cep = cep;
+		this.cidadeId = cidadeId;
+	}
+
 	public String getNome() {
 		return nome;
 	}
